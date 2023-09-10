@@ -442,7 +442,7 @@ constexpr static const int lcd_buffer_size = lcd_screen_size / 2 > 32 * 1024 ? 3
 static uint8_t lcd_buffer1[lcd_buffer_size];
 static uint8_t lcd_buffer2[lcd_buffer_size];
 #else
-constexpr static const int lcd_buffer_size = lcd_screen_size / 2 > 64 * 1024 ? 64 * 1024 : lcd_screen_size / 2;
+constexpr static const int lcd_buffer_size = lcd_screen_size > 64 * 1024 ? 64 * 1024 : lcd_screen_size;
 static uint8_t lcd_buffer1[lcd_buffer_size];
 static uint8_t* lcd_buffer2 = nullptr;
 #endif
@@ -829,9 +829,9 @@ static bool lcd_flush_ready(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_io
 static void uix_on_flush(const rect16& bounds, const void* bmp, void* state) {
     int x1 = bounds.x1, y1 = bounds.y1, x2 = bounds.x2 + 1, y2 = bounds.y2 + 1;
     esp_lcd_panel_draw_bitmap(lcd_handle, x1, y1, x2, y2, (void*)bmp);
-#ifndef LCD_DMA
-    anim_screen.flush_complete();
-#endif
+//#ifndef LCD_DMA
+//    anim_screen.flush_complete();
+//#endif
 }
 #else
 static void uix_on_flush(const rect16& bounds, const void* bmp, void* state) {
